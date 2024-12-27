@@ -1,0 +1,51 @@
+[gd_scene load_steps=8 format=3 uid="uid://d1v30te6fjr5y"]
+
+[ext_resource type="Script" path="res://addons/simple_dialog/Scripts/dialogue_example.gd" id="1_b2aif"]
+[ext_resource type="Script" path="res://addons/simple_dialog/Scripts/dialogue.gd" id="2_n46xh"]
+[ext_resource type="Script" path="res://addons/simple_dialog/Scripts/dialogue_message.gd" id="3_uiq2r"]
+[ext_resource type="AudioStream" uid="uid://cjm653544f8mk" path="res://addons/simple_dialog/Assets/typing_audio.wav" id="4_cnmdm"]
+
+[sub_resource type="Resource" id="Resource_7tbpw"]
+script = ExtResource("3_uiq2r")
+_message = "This is a fast automatic dialogue with audio and delay."
+
+[sub_resource type="Resource" id="Resource_ltj34"]
+script = ExtResource("3_uiq2r")
+_message = "And this is a slow dialogue without audio or delay. and with player input. press Enter to proceed."
+
+[sub_resource type="Resource" id="Resource_fs87w"]
+script = ExtResource("3_uiq2r")
+_message = "Amazing, now since this is the last message it won't wait for player input. bye bye.
+:p"
+
+[node name="DialogueExample" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_b2aif")
+
+[node name="AutomaticDialogue" type="Label" parent="."]
+layout_mode = 1
+offset_right = 1.0
+offset_bottom = 23.0
+horizontal_alignment = 1
+vertical_alignment = 1
+script = ExtResource("2_n46xh")
+dialogue_messages = Array[ExtResource("3_uiq2r")]([SubResource("Resource_7tbpw")])
+typing_audio = ExtResource("4_cnmdm")
+
+[node name="PlayerInputDialogue" type="Label" parent="."]
+layout_mode = 1
+offset_right = 1.0
+offset_bottom = 23.0
+script = ExtResource("2_n46xh")
+dialogue_messages = Array[ExtResource("3_uiq2r")]([SubResource("Resource_ltj34"), SubResource("Resource_fs87w")])
+wait_player_input = true
+delay = 0.0
+play_speed = 0.2
+
+[connection signal="dialogue_finished" from="AutomaticDialogue" to="." method="_on_automatic_dialogue_dialogue_finished"]
+[connection signal="dialogue_finished" from="PlayerInputDialogue" to="." method="_on_player_input_dialogue_dialogue_finished"]
